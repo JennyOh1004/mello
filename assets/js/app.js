@@ -1,30 +1,55 @@
 var $boardContainer = document.querySelector('.container');
-//create $boardContainer //use querySelector method, and it gets a reference to the element with a class of container 
 
-var board = new Board(); //create variable name as board. and then define new Board object.
+var board = new Board(); 
 
-board.addList('To Do');  //it adds 3 lists to the board.
-board.addList('In Progress');
-board.addList('Done');
+function handleListCreate(){
+	var listTitle = prompt('New list title') || '';
+
+	if(listTitle.trim()){
+	board.addList(listTitle);
+
+	renderBoard();
+}
+}
 
 
-board.lists.forEach(function(list, index){ //it loops through each list in the board 
-	// list.addCard('Card #' + (index + 1)); //and adds one card to each list 
-	var $listContainer = document.createElement('div'); //
-	$listContainer.className = 'list';
+function renderBoard(){
+  $boardContainer.innerHTML = '';
 
-	var $header = document.createElement('header');
-	var $headerButton = document.createElement('button');
-	$headerButton.textContent = list.title;
+  board.lists.forEach(function(list, index){ 
+	var $listContainer = document.createElement('div'); 
+	$listContainer.className = 'list'; 
 
-	$header.appendChild('headerButton');
-	$listContainer.appendChild($header);
+	var $header = document.createElement('header'); 
+
+	var $headerButton = document.createElement('button'); 
+	$headerButton.textContent = list.title; 
+
+	$header.appendChild($headerButton); 
+	$listContainer.appendChild($header); 
 	$boardContainer.appendChild($listContainer);
 });
 
-$boardContainer.textContent = JSON.stringify(board); //stringify method
-//it updates the textContent of the $boardContainer to contain the board data.
-//it can be properly rendered to the DOM as text. 읽을수 있게 만들어주는 코드
+var $addListContainer = document.createElement('div');
+$addListContainer.className = 'list add';
+
+var $addListButton = document.createElement('button');
+$addListButton.textContent = '+ Add another list';
+$addListButton.addEventListener('click', handleListCreate);
+
+$addListContainer.appendChild($addListButton);
+$boardContainer.appendChild($addListContainer);
+
+}
+
+
+renderBoard();
+
+
+// $boardContainer.textContent = JSON.stringify(board);
+
+
+
 
 
 
